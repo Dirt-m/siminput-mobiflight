@@ -7,3 +7,7 @@
 src
 _build
 _dist
+
+# Config backups made by tools/to_mobiflight.py (user data)
+backups/
+__pycache__/

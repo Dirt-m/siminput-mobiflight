@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <ModuleType>SIMINPUT rev2</ModuleType>
+  <ModuleName>SIMINPUT</ModuleName>
+  <PowerSavingTime>600</PowerSavingTime>
+  <Button Name="D1" Pin="4" />
+  <Button Name="D2" Pin="5" />
+  <Button Name="D3" Pin="6" />
+  <Button Name="D4" Pin="7" />
+  <Button Name="D5" Pin="8" />
+  <Button Name="D6" Pin="9" />
+  <Button Name="D7" Pin="10" />
+  <Button Name="D8" Pin="11" />
+  <Button Name="D9" Pin="12" />
+  <Button Name="D10" Pin="13" />
+  <Button Name="D11" Pin="14" />
+  <Button Name="D12" Pin="15" />
+  <Button Name="D13" Pin="16" />
+  <Button Name="D14" Pin="17" />
+  <Button Name="D15" Pin="18" />
+  <Button Name="D16" Pin="19" />
+  <Button Name="D17" Pin="20" />
+  <Button Name="D18" Pin="21" />
+  <Button Name="D19" Pin="22" />
+  <Button Name="D20" Pin="23" />
+  <Button Name="D21" Pin="24" />
+  <Button Name="D22" Pin="25" />
+  <Button Name="D23" Pin="30" />
+  <Button Name="D24" Pin="31" />
+  <Button Name="D25" Pin="32" />
+  <Button Name="D26" Pin="33" />
+  <Button Name="D27" Pin="34" />
+  <Button Name="D28" Pin="35" />
+  <Button Name="D29" Pin="36" />
+  <Button Name="D30" Pin="37" />
+  <Button Name="D31" Pin="38" />
+  <Button Name="D32" Pin="39" />
+  <Button Name="D33" Pin="40" />
+  <Button Name="D34" Pin="41" />
+  <Button Name="D35" Pin="42" />
+  <Button Name="D36" Pin="43" />
+  <Button Name="D37" Pin="44" />
+  <Button Name="D38" Pin="45" />
+  <AnalogInput Name="A1" Pin="26" Sensitivity="5" />
+  <AnalogInput Name="A2" Pin="27" Sensitivity="5" />
+  <AnalogInput Name="A3" Pin="28" Sensitivity="5" />
+  <AnalogInput Name="A4" Pin="29" Sensitivity="5" />
+  <Output Name="Backlight" Pin="2" />
+</Config>

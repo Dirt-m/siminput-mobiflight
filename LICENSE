@@ -1,6 +1,8 @@
 MIT License
 
-Copyright (c) 2024 elral
+Copyright (c) 2026 Milo Speelman (SIMINPUT firmware for MobiFlight)
+Copyright (c) 2021 MobiFlight (MobiFlight core firmware, fetched into src/ at build time)
+Copyright (c) 2024 elral (MobiFlight CommunityTemplate)
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

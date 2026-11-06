@@ -1,53 +1,67 @@
-> [!NOTE]  
-> This article is for developers who would like to create their own community device implementation. If you are interested in simply using community devices, check out [this page](https://github.com/MobiFlight/MobiFlight-Connector/wiki/Using-a-pre-build-custom-device)
+# SIMINPUT firmware for MobiFlight
 
-## Prerequisites
-* MobiFlight firmware development is done with [VSCode](https://code.visualstudio.com/) and the [PlatformIO](https://platformio.org) extension. 
-Make sure to install both.
-* **Create** a new reposority by using the [Community Template repository](https://github.com/MobiFlight/CommunityTemplate)*
-* Clone this reposority and open it in PlatformIO. Cloning could be directly done within PlatformIO,
+Alternative firmware for the SIMINPUT rev2 button box. With it, MobiFlight Connector sees the box as a native MobiFlight module called **SIMINPUT rev2**, with every pin already named the way SIMINPUT names them. That adds what the stock joystick firmware can't do: sim-driven outputs, starting with the backlight following the aircraft's panel lighting.
 
-Follow the next steps carefully!
+Rev2 only. Built on the [MobiFlight core firmware](https://github.com/MobiFlight/MobiFlight-FirmwareSource) through the [CommunityTemplate](https://github.com/MobiFlight/CommunityTemplate). Not affiliated with the MobiFlight project.
 
-## Preparing the firmware
-* Open a terminal window within PlatformIO if it's not already opened
+The stock SIMINPUT firmware stays the default. It is a plain USB joystick and works in MobiFlight as an input device too. Use this one if you want MobiFlight outputs or want to manage the box like your other MobiFlight boards.
 
-![image](https://github.com/user-attachments/assets/871652b5-eab5-4709-af93-2338cd526e75)
-* type `python renaming.py` into the terminal window and answer the 2 questions
+## What you get
 
-![image](https://github.com/user-attachments/assets/bc9e553f-f55e-48cd-8374-fb27e9f1ba43)
+| Connector pin | Hardware | Use as |
+|---|---|---|
+| D1 to D22 | GP4 to GP25 | Button, encoder (any two pins), output |
+| A1 to A4 | GP26 to GP29 | Button, analog input (0 to 3.3 V), output |
+| D23 to D38 | TCA9555 expander, virtual pins 30 to 45 | Button only |
+| Backlight | GP2 | Output (PWM 0 to 255) |
 
-All required files and folders get renamed according your naming.
+Two presets ship with the board: "All buttons" (the stock layout) and "Buttons, A1 to A4 analog". Pick one under the module's "upload default config" button, then rename or change devices as you like.
 
-### Testing
-Now it's a good point to test everything you have set up.
+Limits:
+- Encoders work on D1 to D22 only. The expander pins are read over I2C and aren't fast enough.
+- MobiFlight enables the internal pull-up on analog inputs. A pot on A1 to A4 reads slightly non-linear because of it.
+- No steppers, servos, displays, shift registers or multiplexers: every pin already goes to an input jack.
+- The board needs MobiFlight Connector running. It isn't a joystick under this firmware.
 
-The existing firmware itself will do nothing, but you can check if your new community board will show up under the Mobiflight Modules dialog if flashing the firmware to your new board. Additionally you can check if your community device could be choosed and gets uploaded to your board.
-A new Mega w/o firmware is connected:
+## How the expander works
 
-![image](https://github.com/MobiFlight/MobiFlight-Connector/assets/3263285/7167ecb9-c254-400c-88be-fc5ef5b103b3)
+The MobiFlight core only reads buttons from GPIO. arduino-pico defines `pinMode()` and `digitalRead()` as weak symbols, so `SIMINPUT/siminput_expander.cpp` overrides them: pins 30 to 45 go to the TCA9555, everything else goes straight to the core. The expander is only read when it pulls INT# (GP3) low, plus a 20 ms fallback poll. If it stops answering, D23 to D38 read as released, GPIO inputs keep working, and it is probed again every second. The core sources are not modified.
 
-In the list of firmwares there should be an entry which matches `'-DMOBIFLIGHT_TYPE="YourDevice_board"'` from `YourChangedName_platformio.ini`.
-Choose this entry and your firmware gets uploaded.
-After this step you should be able to add a community device.
+## Building
 
-![image](https://github.com/MobiFlight/MobiFlight-Connector/assets/3263285/59f292f7-cbb1-4570-b0be-c5a933958e9e)
+VS Code with PlatformIO, or the CLI:
 
-For each `YourName.YourDevice.device.json` a list item with `"Type": "YourName_YourDevice"` should show up. Choose one of them and check if all pins will show up. If you have more than one community device defined test this with all of them.
+```
+pio run -e siminput_rev2
+```
 
-![image](https://github.com/MobiFlight/MobiFlight-Connector/assets/3263285/55d15e50-39ee-4474-a251-61da51754320)
+The first build clones the MobiFlight core (version set in `SIMINPUT/SIMINPUT_platformio.ini`) into `src/`. Output:
+- `.pio/build/siminput_rev2/siminput_rev2_<version>.uf2`: the firmware.
+- `_dist/siminput_rev2_<version>.zip`: the package for the Connector's `Community` folder (firmware, board definition, presets, license).
 
+Releases: publishing a GitHub release `vX.Y.Z` builds the zip with that version.
 
-## Implement your community firmware
-See all hints in the files. It is also a good idea to check how the examples are set up. The basic GNC255 community device supports an 256x128 OLED, so just one community class is supported. The community device for the FCU and EFIS display from KAV simulation supports five different classes, so it's a good example how to set up two ore more supported devices.
+## Layout
 
-## Further information
+```
+SIMINPUT/
+  SIMINPUT_platformio.ini        build env (board, features, memory sizes)
+  siminput_expander.cpp          TCA9555 virtual pins
+  Community/
+    boards/siminput_rev2.board.json   what the Connector reads: pins, limits, USB IDs, links
+    config/*.mfmc                     device presets
+    firmware/                         flash_nuke for "reset board"; the build adds the UF2
+tools/
+  mftool.py           talk to the board without the Connector (info, upload, monitor, set pin)
+  to_mobiflight.py    stock firmware to MobiFlight, with config backup (Linux)
+  to_siminput.py      back to the stock firmware, with config restore (Linux)
+docs/                 goal, hardware notes, MobiFlight notes, test plan
+```
 
-### Special message
-There are some special messages with their respective IDs defined:
-* Stop message (`-1`) - The device should turn off on receiving this message. The message is sent by the Connector any time the MobiFlight execution stops (Stop-button) or the application is shutdown.
-* PowerSavingMode message (`-2`) - The device should go into a power saving mode (value=1) or wake up from it again (value=0).
+## Switching firmware
 
-### Overview how the json files are related
-![image](https://github.com/MobiFlight/MobiFlight-Connector/assets/3263285/0123829b-27c1-49ad-96d2-30a751da6e25)
+Switching wipes the box, including `config.json`. Back it up first. On Linux, `tools/to_mobiflight.py` does the backup and the switch, and `tools/to_siminput.py` goes back. See `docs/TESTING.md` for the exact commands. The SIMINPUT updater app will get the same flow for Windows and macOS users.
 
+## License
+
+MIT, see `LICENSE`. The binary also contains the arduino-pico core (LGPL 2.1). See `SIMINPUT/Community/LICENSE.txt` for every component.

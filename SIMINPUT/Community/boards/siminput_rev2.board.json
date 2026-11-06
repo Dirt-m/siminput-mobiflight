@@ -1,0 +1,367 @@
+{
+  "$schema": "./mfboard.schema.json",
+  "UsbDriveSettings": {
+    "VolumeLabel": "RPI-RP2",
+    "VerificationFileName": "INFO_UF2.TXT"
+  },
+  "Connection": {
+    "ConnectionDelay": 1250,
+    "DelayAfterFirmwareUpdate": 1250,
+    "DtrEnable": true,
+    "EEPROMSize": 3000,
+    "ExtraConnectionRetry": false,
+    "ForceResetOnFirmwareUpdate": true,
+    "MessageSize": 64
+  },
+  "HardwareIds": [
+    "^VID_2E8A&PID_000A"
+  ],
+  "Info": {
+    "CanInstallFirmware": true,
+    "CanResetBoard": true,
+    "FirmwareBaseName": "siminput_rev2",
+    "FirmwareExtension": "uf2",
+    "FriendlyName": "SIMINPUT rev2",
+    "LatestFirmwareVersion": "0.0.1",
+    "MobiFlightType": "SIMINPUT rev2",
+    "ResetFirmwareFile": "reset.raspberry_pico_flash_nuke.uf2",
+    "CustomDeviceTypes": [],
+    "Community": {
+      "Project": "SIMINPUT",
+      "Website": "https://siminput.com",
+      "Docs": "https://siminput.com/docs",
+      "Support": "https://discord.gg/P84s2zj8Du"
+    },
+    "DeviceConfigs": [
+      {
+        "Name": "All buttons",
+        "Description": "D1 to D38 and A1 to A4 as buttons, backlight as a PWM output. The stock SIMINPUT layout.",
+        "File": "siminput_rev2.all-buttons.mfmc",
+        "DefaultUpload": true
+      },
+      {
+        "Name": "Buttons, A1 to A4 analog",
+        "Description": "D1 to D38 as buttons, A1 to A4 as analog inputs, backlight as a PWM output.",
+        "File": "siminput_rev2.analog.mfmc",
+        "DefaultUpload": true
+      }
+    ]
+  },
+  "ModuleLimits": {
+    "MaxAnalogInputs": 4,
+    "MaxInputShifters": 0,
+    "MaxButtons": 42,
+    "MaxEncoders": 11,
+    "MaxLcdI2C": 0,
+    "MaxLedSegments": 0,
+    "MaxOutputs": 27,
+    "MaxServos": 0,
+    "MaxShifters": 0,
+    "MaxSteppers": 0,
+    "MaxInputMultiplexer": 0,
+    "MaxCustomDevices": 0
+  },
+  "Pins": [
+    {
+      "Name": "Backlight",
+      "Pin": 2,
+      "isAnalog": false,
+      "isI2C": false,
+      "isPWM": true
+    },
+    {
+      "Name": "D1",
+      "Pin": 4,
+      "isAnalog": false,
+      "isI2C": false,
+      "isPWM": true
+    },
+    {
+      "Name": "D2",
+      "Pin": 5,
+      "isAnalog": false,
+      "isI2C": false,
+      "isPWM": true
+    },
+    {
+      "Name": "D3",
+      "Pin": 6,
+      "isAnalog": false,
+      "isI2C": false,
+      "isPWM": true
+    },
+    {
+      "Name": "D4",
+      "Pin": 7,
+      "isAnalog": false,
+      "isI2C": false,
+      "isPWM": true
+    },
+    {
+      "Name": "D5",
+      "Pin": 8,
+      "isAnalog": false,
+      "isI2C": false,
+      "isPWM": true
+    },
+    {
+      "Name": "D6",
+      "Pin": 9,
+      "isAnalog": false,
+      "isI2C": false,
+      "isPWM": true
+    },
+    {
+      "Name": "D7",
+      "Pin": 10,
+      "isAnalog": false,
+      "isI2C": false,
+      "isPWM": true
+    },
+    {
+      "Name": "D8",
+      "Pin": 11,
+      "isAnalog": false,
+      "isI2C": false,
+      "isPWM": true
+    },
+    {
+      "Name": "D9",
+      "Pin": 12,
+      "isAnalog": false,
+      "isI2C": false,
+      "isPWM": true
+    },
+    {
+      "Name": "D10",
+      "Pin": 13,
+      "isAnalog": false,
+      "isI2C": false,
+      "isPWM": true
+    },
+    {
+      "Name": "D11",
+      "Pin": 14,
+      "isAnalog": false,
+      "isI2C": false,
+      "isPWM": true
+    },
+    {
+      "Name": "D12",
+      "Pin": 15,
+      "isAnalog": false,
+      "isI2C": false,
+      "isPWM": true
+    },
+    {
+      "Name": "D13",
+      "Pin": 16,
+      "isAnalog": false,
+      "isI2C": false,
+      "isPWM": true
+    },
+    {
+      "Name": "D14",
+      "Pin": 17,
+      "isAnalog": false,
+      "isI2C": false,
+      "isPWM": true
+    },
+    {
+      "Name": "D15",
+      "Pin": 18,
+      "isAnalog": false,
+      "isI2C": false,
+      "isPWM": true
+    },
+    {
+      "Name": "D16",
+      "Pin": 19,
+      "isAnalog": false,
+      "isI2C": false,
+      "isPWM": true
+    },
+    {
+      "Name": "D17",
+      "Pin": 20,
+      "isAnalog": false,
+      "isI2C": false,
+      "isPWM": true
+    },
+    {
+      "Name": "D18",
+      "Pin": 21,
+      "isAnalog": false,
+      "isI2C": false,
+      "isPWM": true
+    },
+    {
+      "Name": "D19",
+      "Pin": 22,
+      "isAnalog": false,
+      "isI2C": false,
+      "isPWM": true
+    },
+    {
+      "Name": "D20",
+      "Pin": 23,
+      "isAnalog": false,
+      "isI2C": false,
+      "isPWM": true
+    },
+    {
+      "Name": "D21",
+      "Pin": 24,
+      "isAnalog": false,
+      "isI2C": false,
+      "isPWM": true
+    },
+    {
+      "Name": "D22",
+      "Pin": 25,
+      "isAnalog": false,
+      "isI2C": false,
+      "isPWM": true
+    },
+    {
+      "Name": "A1",
+      "Pin": 26,
+      "isAnalog": true,
+      "isI2C": false,
+      "isPWM": true
+    },
+    {
+      "Name": "A2",
+      "Pin": 27,
+      "isAnalog": true,
+      "isI2C": false,
+      "isPWM": true
+    },
+    {
+      "Name": "A3",
+      "Pin": 28,
+      "isAnalog": true,
+      "isI2C": false,
+      "isPWM": true
+    },
+    {
+      "Name": "A4",
+      "Pin": 29,
+      "isAnalog": true,
+      "isI2C": false,
+      "isPWM": true
+    },
+    {
+      "Name": "D23",
+      "Pin": 30,
+      "isAnalog": false,
+      "isI2C": false,
+      "isPWM": false
+    },
+    {
+      "Name": "D24",
+      "Pin": 31,
+      "isAnalog": false,
+      "isI2C": false,
+      "isPWM": false
+    },
+    {
+      "Name": "D25",
+      "Pin": 32,
+      "isAnalog": false,
+      "isI2C": false,
+      "isPWM": false
+    },
+    {
+      "Name": "D26",
+      "Pin": 33,
+      "isAnalog": false,
+      "isI2C": false,
+      "isPWM": false
+    },
+    {
+      "Name": "D27",
+      "Pin": 34,
+      "isAnalog": false,
+      "isI2C": false,
+      "isPWM": false
+    },
+    {
+      "Name": "D28",
+      "Pin": 35,
+      "isAnalog": false,
+      "isI2C": false,
+      "isPWM": false
+    },
+    {
+      "Name": "D29",
+      "Pin": 36,
+      "isAnalog": false,
+      "isI2C": false,
+      "isPWM": false
+    },
+    {
+      "Name": "D30",
+      "Pin": 37,
+      "isAnalog": false,
+      "isI2C": false,
+      "isPWM": false
+    },
+    {
+      "Name": "D31",
+      "Pin": 38,
+      "isAnalog": false,
+      "isI2C": false,
+      "isPWM": false
+    },
+    {
+      "Name": "D32",
+      "Pin": 39,
+      "isAnalog": false,
+      "isI2C": false,
+      "isPWM": false
+    },
+    {
+      "Name": "D33",
+      "Pin": 40,
+      "isAnalog": false,
+      "isI2C": false,
+      "isPWM": false
+    },
+    {
+      "Name": "D34",
+      "Pin": 41,
+      "isAnalog": false,
+      "isI2C": false,
+      "isPWM": false
+    },
+    {
+      "Name": "D35",
+      "Pin": 42,
+      "isAnalog": false,
+      "isI2C": false,
+      "isPWM": false
+    },
+    {
+      "Name": "D36",
+      "Pin": 43,
+      "isAnalog": false,
+      "isI2C": false,
+      "isPWM": false
+    },
+    {
+      "Name": "D37",
+      "Pin": 44,
+      "isAnalog": false,
+      "isI2C": false,
+      "isPWM": false
+    },
+    {
+      "Name": "D38",
+      "Pin": 45,
+      "isAnalog": false,
+      "isI2C": false,
+      "isPWM": false
+    }
+  ]
+}
