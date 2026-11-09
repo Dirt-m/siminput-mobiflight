@@ -29,18 +29,18 @@ This backs up `config.json` to `backups/`, reboots the box into the bootloader o
 1. **Identity.** `mft info`: type `SIMINPUT rev2`, name `SIMINPUT`, version `0.0.1`, core `3.1.4`. `lsusb` shows `2e8a:000a SIMINPUT SIMINPUT (MobiFlight)`.
 2. **Config.** `mft upload SIMINPUT/Community/config/siminput_rev2.all-buttons.mfmc`, then `mft config` lists 43 devices.
 3. **Buttons.** `mft monitor`, then press inputs on a direct jack (D1 to D22), an expander jack (D23 to D38) and A1 to A4. Include D20 to D22 and A4 (GP23 to GP25, GP29): those pins are special on a real Pico, so this checks that the `pico` board variant leaves them alone. Each gives exactly one `0` on press and one `1` on release, with the right name. Expander buttons must not be inverted (press gives `0`). This only proves the polarity reset if the box was not power-cycled since CircuitPython.
-4. **Startup state.** Hold a switch closed on an expander pin and one on a GPIO pin, then restart `mft monitor`. Both show up as pressed in the retrigger burst right after connecting.
+4. **Startup state.** Hold a switch closed on an expander pin and one on a GPIO pin, then restart `mft monitor`. Both show up as pressed in the retrigger burst right after connecting. Passed 2026-11-09 (D20, D38).
 5. **Backlight.** `for v in 1 10 25 50 100 150 200 255 0; do mft out 0 $v; sleep 3; done`. The argument is the output device index (Backlight is the only output, so 0), not the pin: that is what the core and the Connector use. 1 is a faint glow, 255 full, 0 off, smooth steps, no flicker. Passed on 2026-11-09.
 6. **Encoder, non-adjacent pins.** Plug an encoder's A/B into two D jacks that are *not* next to each other, for example D3 and D7 (GP6, GP10). Then:
-   `mft upload --raw "8.6.10.0.Enc:3.2.Backlight:"` and `mft monitor`. Turn it slowly and quickly in both directions. Expect `encoder Enc 0` (left) and `encoder Enc 2` (right), plus `1` and `3` for fast turns. If the direction is reversed, swap the pins. The third field is the encoder type (0 to 4: 1 detent per cycle at 11 or at 00, 2 detents, 4 detents). If one click gives zero, two or four events, try the others. Report which type matches the SIMINPUT encoders, so the docs can name it. 2026-11-09: works on D3 + D7 with type 0.
-7. **Analog.** `mft upload SIMINPUT/Community/config/siminput_rev2.analog.mfmc`, monitor, turn a pot on A1. Values 0 to 1023, no flood of events when it's still.
+   `mft upload --raw "8.6.10.0.Enc:3.2.Backlight:"` and `mft monitor`. Turn it slowly and quickly in both directions. Expect `encoder Enc 0` (left) and `encoder Enc 2` (right), plus `1` and `3` for fast turns. If the direction is reversed, swap the pins. The third field is the encoder type (0 to 4: 1 detent per cycle at 11 or at 00, 2 detents, 4 detents). If one click gives zero, two or four events, try the others. Report which type matches the SIMINPUT encoders, so the docs can name it. 2026-11-09: counts on D3 + D7 with type 0, but the first click after a direction change is lost (wrong detent position). Type 1 (1 detent per cycle, at 00) is right for the SIMINPUT encoders.
+7. **Analog.** `mft upload SIMINPUT/Community/config/siminput_rev2.analog.mfmc`, monitor, turn a pot on A1. Values 0 to 1023, no flood of events when it's still. 2026-11-09: bridged reads 2, open floats around 200 (no pull-up, as in the stock firmware).
 8. **Dead expander.** Build a firmware that looks for the expander at the wrong address:
    ```
    PLATFORMIO_BUILD_FLAGS="-DSIMINPUT_TCA_ADDR=0x21" pio run -e siminput_rev2
    mft bootloader
    ```
    Copy the UF2 onto RPI-RP2. Run `mft monitor`: you should see the debug line `SIMINPUT: expander not responding`. D1 to D22 still work and D23 to D38 stay silent. Then rebuild without the flag and flash it again.
-9. **Reset board.** `mft bootloader` gives RPI-RP2. Copy `SIMINPUT/Community/firmware/reset.raspberry_pico_flash_nuke.uf2`, then the normal UF2 again. `mft config` is empty (config wiped). Re-upload a preset.
+9. **Reset board.** `mft bootloader` gives RPI-RP2. Copy `SIMINPUT/Community/firmware/reset.raspberry_pico_flash_nuke.uf2`, then the normal UF2 again. `mft config` is empty (config wiped). Re-upload a preset. Passed 2026-11-09.
 
 Send me the output of anything that fails.
 

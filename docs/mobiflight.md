@@ -57,7 +57,7 @@ The stock SIMINPUT firmware is a standard HID joystick (128 buttons, 8 axes). Mo
 
 ## Other findings
 
-- The Connector sends analog inputs as type 11 (`kTypeAnalogInputDeprecated`), which the core sets up with `INPUT_PULLUP`.
+- The Connector sends analog inputs as type 11 (`kTypeAnalogInputDeprecated`). The core sets `INPUT_PULLUP`, but arduino-pico's `analogRead()` reinitialises the pin for the ADC and drops the pull-up. Measured on 2026-11-09: an empty jack floats around 150 to 250 and drifts; bridged to GND reads 2. Same as the stock firmware (`AnalogIn`, no pull).
 - `Info.DeviceConfigs` in the board JSON lists `.mfmc` presets in `Community/<project>/config/`.
 - The core only sends input events after the Connector has called GetConfig (`getBoardReady()`).
 - The core's device modules are not compile-guarded by their `MF_*_SUPPORT` flags. Unused ones must be removed with `build_src_filter`, or their library headers (AccelStepper, Servo, LiquidCrystal_I2C) are still needed.
