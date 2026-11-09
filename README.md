@@ -39,6 +39,8 @@ The first build clones the MobiFlight core (version set in `SIMINPUT/SIMINPUT_pl
 - `.pio/build/siminput_rev2/siminput_rev2_<version>.uf2`: the firmware.
 - `_dist/siminput_rev2_<version>.zip`: the package for the Connector's `Community` folder (firmware, board definition, presets, license).
 
+After changing anything under `SIMINPUT/Community`, delete `_build/` before building: the template copies that folder only once, so the zip would keep the old files.
+
 Releases: publishing a GitHub release `vX.Y.Z` builds the zip with that version.
 
 ## Layout
