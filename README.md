@@ -18,7 +18,7 @@ The stock SIMINPUT firmware stays the default. It is a plain USB joystick and wo
 Two presets ship with the board: "All buttons" (the stock layout) and "Buttons, A1 to A4 analog". Pick one under the module's "upload default config" button, then rename or change devices as you like.
 
 Limits:
-- Encoders work on D1 to D22 only. The expander pins are read over I2C and aren't fast enough.
+- Encoders work on any two of D1 to D22, adjacent or not (tested on D3 + D7). Not on the expander pins: they are read over I2C and aren't fast enough.
 - MobiFlight enables the internal pull-up on analog inputs. A pot on A1 to A4 reads slightly non-linear because of it.
 - No steppers, servos, displays, shift registers or multiplexers: every pin already goes to an input jack.
 - The board needs MobiFlight Connector running. It isn't a joystick under this firmware.
