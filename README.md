@@ -51,6 +51,6 @@ More: [how it works](docs/how-it-works.md), [testing](docs/testing.md).
 
 Built on the [MobiFlight firmware](https://github.com/MobiFlight/MobiFlight-FirmwareSource) and [CommunityTemplate](https://github.com/MobiFlight/CommunityTemplate). Thanks to the MobiFlight team.
 
-Written by Milo Speelman with a lot of help from Claude, an AI model. Everything was tested on real boxes.
+Written by Milo with a lot of help from Claude. Everything was tested on real boxes.
 
 MIT, see `LICENSE`. The firmware also contains the arduino-pico core (LGPL 2.1); `SIMINPUT/Community/LICENSE.txt` lists every component.
