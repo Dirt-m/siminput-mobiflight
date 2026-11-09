@@ -33,7 +33,7 @@ extern "C" PinStatus __digitalRead(pin_size_t pin);
 
 namespace
 {
-    // Hardware, see docs/board-rev2.md
+    // Hardware, see docs/how-it-works.md
     constexpr uint8_t PIN_SDA   = 0;
     constexpr uint8_t PIN_SCL   = 1;
     constexpr uint8_t PIN_INT   = 3; // TCA9555 INT#, open drain, active low

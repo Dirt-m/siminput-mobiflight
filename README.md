@@ -1,70 +1,56 @@
 # SIMINPUT firmware for MobiFlight
 
-Alternative firmware for the SIMINPUT rev2 button box. With it, MobiFlight Connector sees the box as a native MobiFlight module called **SIMINPUT rev2**, with every pin already named the way SIMINPUT names them. That adds what the stock joystick firmware can't do: sim-driven outputs, starting with the backlight following the aircraft's panel lighting.
+Firmware that turns a SIMINPUT rev2 box into a native MobiFlight module. MobiFlight Connector shows it as **SIMINPUT rev2**, with every jack named the way it's printed on the box, and you can drive outputs from the sim. The first one is the backlight: it can follow your aircraft's panel lighting.
 
-Rev2 only. Built on the [MobiFlight core firmware](https://github.com/MobiFlight/MobiFlight-FirmwareSource) through the [CommunityTemplate](https://github.com/MobiFlight/CommunityTemplate). Not affiliated with the MobiFlight project.
+The stock SIMINPUT firmware stays the default. It's a plain USB joystick and works fine in MobiFlight for inputs. You only need this if you want sim-driven outputs, or want to manage the box like your other MobiFlight boards.
 
-The stock SIMINPUT firmware stays the default. It is a plain USB joystick and works in MobiFlight as an input device too. Use this one if you want MobiFlight outputs or want to manage the box like your other MobiFlight boards.
+Rev2 boxes only. Not affiliated with the MobiFlight project.
+
+## Installing
+
+1. Download `siminput_rev2_<version>.zip` from [Releases](../../releases).
+2. Unzip it into MobiFlight Connector's `Community` folder, `%LOCALAPPDATA%\MobiFlight\MobiFlight Connector\Community\`, so you get `Community\SIMINPUT\`. Restart the Connector.
+3. Put the firmware on the box. Switching wipes the box, including your SIMINPUT configuration, so back it up first. The SIMINPUT Configurator will do the backup and the switch for you, both ways. Until then: hold BOOTSEL while plugging in the box and flash it from the Connector, which offers `SIMINPUT rev2` for the RPI-RP2 drive.
+4. In the Connector, select the module and click "upload default config". That loads the "All buttons" layout.
 
 ## What you get
 
-| Connector pin | Hardware | Use as |
-|---|---|---|
-| D1 to D22 | GP4 to GP25 | Button, encoder (any two pins), output (D15 and D16 on/off only: they share a PWM slice with the backlight) |
-| A1 to A4 | GP26 to GP29 | Button, analog input (0 to 3.3 V), output |
-| D23 to D38 | TCA9555 expander, virtual pins 30 to 45 | Button only |
-| Backlight | GP2 | Output, 0 to 255 with the stock SIMINPUT brightness curve (16 bit PWM, 1 kHz) |
+| Jack | Use as |
+|---|---|
+| D1 to D22 | Button, encoder, output |
+| D23 to D38 | Button |
+| A1 to A4 | Button or analog input |
+| Backlight | Output, 0 to 255 |
 
-The board ships one preset, "All buttons" (the stock layout). Load it with the module's "upload default config" button. To use a pot, change that A jack from Button to Analog Input in the Connector's device list, one jack per pot.
+- **Encoders** work on any two of D1 to D22, next to each other or not. Pick encoder type "1 detent per cycle (00)". D23 to D38 sit on an I2C expander and can't do encoders.
+- **Pots** go on A1 to A4. Change that jack from Button to Analog Input and set sensitivity to 3 (the default 5 is coarse). Only set jacks with a pot plugged in to analog: an empty analog input picks up noise.
+- **Backlight** uses the same brightness curve as the stock firmware. Map the sim value straight to 0 to 255, for example `$*2.55` for a percentage.
+- D15 and D16 share a PWM channel with the backlight, so as outputs they're on/off only.
 
-Limits:
-- Encoders work on any two of D1 to D22, adjacent or not (tested on D3 + D7). Pick encoder type "1 detent per cycle (00)" in the Connector for the SIMINPUT encoders. Not on the expander pins: they are read over I2C and aren't fast enough.
-- Analog inputs have no pull-up (as in the stock firmware), so a pot reads linear. Only set up A jacks with a pot plugged in as Analog Input: an empty analog input picks up noise and sends random values. Leave unused A jacks as buttons or remove them. Set the Analog Input's sensitivity to 3 in the Connector (default 5): smoother, and still quiet at rest. 2 is smoother still but can flicker between two values.
-- No steppers, servos, displays, shift registers or multiplexers: every pin already goes to an input jack.
-- The board needs MobiFlight Connector running. It isn't a joystick under this firmware.
+Under this firmware the box is not a joystick any more. It only talks to MobiFlight Connector, which has to be running.
 
-## How the expander works
+## Going back to the stock firmware
 
-The MobiFlight core only reads buttons from GPIO. arduino-pico defines `pinMode()` and `digitalRead()` as weak symbols, so `SIMINPUT/siminput_expander.cpp` overrides them: pins 30 to 45 go to the TCA9555, everything else goes straight to the core. The expander is only read when it pulls INT# (GP3) low, plus a 20 ms fallback poll. If it stops answering, D23 to D38 read as released, GPIO inputs keep working, and it is probed again every second. The core sources are not modified.
+Use the SIMINPUT Configurator once it supports switching. By hand: flash `flash_nuke.uf2`, then CircuitPython 9.x, then copy the stock firmware files and your backed-up `config.json` onto the CIRCUITPY drive. `tools/to_siminput.py` does exactly that on Linux.
 
 ## Building
 
-VS Code with PlatformIO, or the CLI:
+[PlatformIO](https://platformio.org), in VS Code or on the command line:
 
 ```
 pio run -e siminput_rev2
 ```
 
-The first build clones the MobiFlight core (version set in `SIMINPUT/SIMINPUT_platformio.ini`) into `src/`. Output:
-- `.pio/build/siminput_rev2/siminput_rev2_<version>.uf2`: the firmware.
-- `_dist/siminput_rev2_<version>.zip`: the package for the Connector's `Community` folder (firmware, board definition, presets, license).
+The first build fetches the MobiFlight core into `src/`. You get the UF2 in `.pio/build/siminput_rev2/` and the Connector package in `_dist/`. After changing anything under `SIMINPUT/Community`, delete `_build/` first, or the package keeps the old files.
 
-After changing anything under `SIMINPUT/Community`, delete `_build/` before building: the template copies that folder only once, so the zip would keep the old files.
+Publishing a GitHub release `vX.Y.Z` builds the package with that version.
 
-Releases: publishing a GitHub release `vX.Y.Z` builds the zip with that version.
+More: [how it works](docs/how-it-works.md), [testing](docs/testing.md).
 
-## Layout
+## Credits and license
 
-```
-SIMINPUT/
-  SIMINPUT_platformio.ini        build env (board, features, memory sizes)
-  siminput_expander.cpp          TCA9555 virtual pins
-  siminput_backlight.cpp         backlight brightness curve
-  Community/
-    boards/siminput_rev2.board.json   what the Connector reads: pins, limits, USB IDs, links
-    config/*.mfmc                     device presets
-    firmware/                         flash_nuke for "reset board"; the build adds the UF2
-tools/
-  mftool.py           talk to the board without the Connector (info, upload, monitor, set output)
-  to_mobiflight.py    stock firmware to MobiFlight, with config backup (Linux)
-  to_siminput.py      back to the stock firmware, with config restore (Linux)
-docs/                 goal, hardware notes, MobiFlight notes, test plan
-```
+Built on the [MobiFlight firmware](https://github.com/MobiFlight/MobiFlight-FirmwareSource) and [CommunityTemplate](https://github.com/MobiFlight/CommunityTemplate). Thanks to the MobiFlight team.
 
-## Switching firmware
+Written by Milo Speelman with a lot of help from Claude, an AI model. Everything was tested on real boxes.
 
-Switching wipes the box, including `config.json`. Back it up first. On Linux, `tools/to_mobiflight.py` does the backup and the switch, and `tools/to_siminput.py` goes back. See `docs/TESTING.md` for the exact commands. The SIMINPUT updater app will get the same flow for Windows and macOS users.
-
-## License
-
-MIT, see `LICENSE`. The binary also contains the arduino-pico core (LGPL 2.1). See `SIMINPUT/Community/LICENSE.txt` for every component.
+MIT, see `LICENSE`. The firmware also contains the arduino-pico core (LGPL 2.1); `SIMINPUT/Community/LICENSE.txt` lists every component.

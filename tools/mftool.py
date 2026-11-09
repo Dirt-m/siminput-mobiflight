@@ -7,9 +7,9 @@ protocol as MobiFlight Connector: fields split by ',', commands end with ';',
 
     uv run --with pyserial tools/mftool.py info
     uv run --with pyserial tools/mftool.py upload SIMINPUT/Community/config/siminput_rev2.all-buttons.mfmc
-    uv run --with pyserial tools/mftool.py upload --raw "8.4.6.0.Enc test:3.2.Backlight:"
+    uv run --with pyserial tools/mftool.py upload --raw "8.6.10.1.Enc:3.2.Backlight:"   # encoder on D3/D7 plus the backlight
     uv run --with pyserial tools/mftool.py monitor
-    uv run --with pyserial tools/mftool.py out 0 128        # output 0 (Backlight in the presets) to 50 %
+    uv run --with pyserial tools/mftool.py out 0 128        # output 0 (the backlight in the preset) to 128
     uv run --with pyserial tools/mftool.py bootloader       # 1200 baud touch: reboot to RPI-RP2
 
 The port defaults to the first /dev/ttyACM* with the Raspberry Pi VID; pass --port to override.
