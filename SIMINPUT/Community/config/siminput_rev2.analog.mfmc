@@ -42,8 +42,8 @@
   <Button Name="D37" Pin="44" />
   <Button Name="D38" Pin="45" />
   <AnalogInput Name="A1" Pin="26" Sensitivity="5" />
-  <AnalogInput Name="A2" Pin="27" Sensitivity="5" />
-  <AnalogInput Name="A3" Pin="28" Sensitivity="5" />
-  <AnalogInput Name="A4" Pin="29" Sensitivity="5" />
+  <Button Name="A2" Pin="27" />
+  <Button Name="A3" Pin="28" />
+  <Button Name="A4" Pin="29" />
   <Output Name="Backlight" Pin="2" />
 </Config>

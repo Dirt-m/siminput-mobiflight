@@ -15,7 +15,7 @@ The stock SIMINPUT firmware stays the default. It is a plain USB joystick and wo
 | D23 to D38 | TCA9555 expander, virtual pins 30 to 45 | Button only |
 | Backlight | GP2 | Output, 0 to 255 with the stock SIMINPUT brightness curve (16 bit PWM, 1 kHz) |
 
-Two presets ship with the board: "All buttons" (the stock layout) and "Buttons, A1 to A4 analog". Pick one under the module's "upload default config" button, then rename or change devices as you like.
+Two presets ship with the board: "All buttons" (the stock layout) and "Buttons, A1 analog" (a pot on A1, A2 to A4 stay buttons). Pick one under the module's "upload default config" button, then change devices as you like. Only set up A jacks with a pot plugged in as analog: an empty analog input floats and follows whichever input was read before it.
 
 Limits:
 - Encoders work on any two of D1 to D22, adjacent or not (tested on D3 + D7). Pick encoder type "1 detent per cycle (00)" in the Connector for the SIMINPUT encoders. Not on the expander pins: they are read over I2C and aren't fast enough.
