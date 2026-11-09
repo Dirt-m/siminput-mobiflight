@@ -39,7 +39,9 @@ The stock firmware already works in MobiFlight as a joystick, but only for input
 
 ## Still to do
 
-- Hardware tests, `docs/TESTING.md`.
+- Hardware tests: round 1 (Linux) and round 2 (Windows Connector) passed on 2026-11-09. Still open: the expander polarity reset on a box switched straight from the stock firmware (test 3 in round 1).
+- Before distributing binaries: make the repo public, or ship object files with each release (arduino-pico is LGPL 2.1).
+- First release: tag `v0.1.0` so the release workflow builds the zip.
 - Switch flow in the SIMINPUT updater app (backup, `bootloader` command, copy UF2; and back: 1200 baud touch, flash_nuke, CircuitPython, files, config restore). `tools/to_mobiflight.py` and `tools/to_siminput.py` do this on Linux today and are the reference.
 - Courtesy note to the MobiFlight team (Discord) before launch.
 - siminput.com docs page.

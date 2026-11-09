@@ -53,6 +53,8 @@ Send me the output of anything that fails.
 
 ### Tests
 
+All seven passed on 2026-11-09.
+
 1. **Detection.** Plug in the box (already on this firmware from round 1). Under Settings, MobiFlight Modules, it shows as `SIMINPUT rev2` with the SIMINPUT website/docs/support buttons.
 2. **Preset.** Select the module and use the "upload default config" button to load "All buttons". The device list shows D1 to D38, A1 to A4 and Backlight. Open a Button and check the pin dropdown shows names (`D5`), not numbers. Then change A1 from Button to Analog Input in the device list, upload, and set its sensitivity to 3, and check a pot on A1 reads in the Connector.
 3. **Input mapping.** Make an input config on a GPIO button and one on an expander button (D23+) that toggle something visible in the sim, for example the nav lights. Both work, both on press and release.
