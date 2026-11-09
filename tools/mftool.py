@@ -9,7 +9,7 @@ protocol as MobiFlight Connector: fields split by ',', commands end with ';',
     uv run --with pyserial tools/mftool.py upload SIMINPUT/Community/config/siminput_rev2.all-buttons.mfmc
     uv run --with pyserial tools/mftool.py upload --raw "8.4.6.0.Enc test:3.2.Backlight:"
     uv run --with pyserial tools/mftool.py monitor
-    uv run --with pyserial tools/mftool.py pin 2 128        # backlight to 50 %
+    uv run --with pyserial tools/mftool.py out 0 128        # output 0 (Backlight in the presets) to 50 %
     uv run --with pyserial tools/mftool.py bootloader       # 1200 baud touch: reboot to RPI-RP2
 
 The port defaults to the first /dev/ttyACM* with the Raspberry Pi VID; pass --port to override.
@@ -196,7 +196,7 @@ def cmd_monitor(b, _):
 
 
 def cmd_pin(b, args):
-    b.send(K_SET_PIN, args.pin, args.value)
+    b.send(K_SET_PIN, args.index, args.value)  # the core takes the output device index, not the pin
     time.sleep(0.1)
 
 
@@ -217,8 +217,8 @@ def main():
     up.add_argument("file", help=".mfmc file, or a raw config string with --raw")
     up.add_argument("--raw", action="store_true")
     sub.add_parser("monitor")
-    p = sub.add_parser("pin", help="set an output: pin number and value 0 to 255")
-    p.add_argument("pin", type=int)
+    p = sub.add_parser("out", help="set an output: device index (order among outputs in the config, from 0) and value 0 to 255")
+    p.add_argument("index", type=int)
     p.add_argument("value", type=int)
     sub.add_parser("bootloader")
     args = ap.parse_args()
@@ -228,7 +228,7 @@ def main():
         return cmd_bootloader(None, args)
     b = Board(args.port)
     {"info": cmd_info, "config": cmd_config, "upload": cmd_upload, "monitor": cmd_monitor,
-     "pin": cmd_pin}[args.cmd](b, args)
+     "out": cmd_pin}[args.cmd](b, args)
 
 
 if __name__ == "__main__":

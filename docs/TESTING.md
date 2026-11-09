@@ -30,7 +30,7 @@ This backs up `config.json` to `backups/`, reboots the box into the bootloader o
 2. **Config.** `mft upload SIMINPUT/Community/config/siminput_rev2.all-buttons.mfmc`, then `mft config` lists 43 devices.
 3. **Buttons.** `mft monitor`, then press inputs on a direct jack (D1 to D22), an expander jack (D23 to D38) and A1 to A4. Include D20 to D22 and A4 (GP23 to GP25, GP29): those pins are special on a real Pico, so this checks that the `pico` board variant leaves them alone. Each gives exactly one `0` on press and one `1` on release, with the right name. Expander buttons must not be inverted (press gives `0`). This only proves the polarity reset if the box was not power-cycled since CircuitPython.
 4. **Startup state.** Hold a switch closed on an expander pin and one on a GPIO pin, then restart `mft monitor`. Both show up as pressed in the retrigger burst right after connecting.
-5. **Backlight.** `mft pin 2 255`, `mft pin 2 20`, `mft pin 2 0`. Full, dim, off. Check for flicker at low values.
+5. **Backlight.** `for v in 1 10 25 50 100 150 200 255 0; do mft out 0 $v; sleep 3; done`. The argument is the output device index (Backlight is the only output, so 0), not the pin: that is what the core and the Connector use. 1 is a faint glow, 255 full, 0 off, smooth steps, no flicker. Passed on 2026-11-09.
 6. **Encoder, non-adjacent pins.** Plug an encoder's A/B into two D jacks that are *not* next to each other, for example D3 and D7 (GP6, GP10). Then:
    `mft upload --raw "8.6.10.0.Enc:3.2.Backlight:"` and `mft monitor`. Turn it slowly and quickly in both directions. Expect `encoder Enc 0` (left) and `encoder Enc 2` (right), plus `1` and `3` for fast turns. If the direction is reversed, swap the pins. The third field is the encoder type (0 to 4: 1 detent per cycle at 11 or at 00, 2 detents, 4 detents). If one click gives zero, two or four events, try the others. Report which type matches the SIMINPUT encoders, so the docs can name it.
 7. **Analog.** `mft upload SIMINPUT/Community/config/siminput_rev2.analog.mfmc`, monitor, turn a pot on A1. Values 0 to 1023, no flood of events when it's still.
@@ -61,7 +61,7 @@ Send me the output of anything that fails.
    - MSFS: a simvar such as `(A:LIGHT POTENTIOMETER:3, Percent)` (the index differs per aircraft) or `(A:LIGHT PANEL, Bool)` for on/off.
    - X-Plane: dataref `sim/cockpit2/switches/panel_brightness_ratio[0]` (0 to 1).
    - Scale to 0 to 255 in the config (MSFS percent: `$*2.55`, X-Plane ratio: `$*255`). Turning the panel lights knob in the cockpit dims the box.
-   - Try a perceptual curve with interpolation (for example 0→0, 25→5, 50→40, 75→120, 100→255) and tell me if 8-bit steps are visible at the low end. If they are, I'll add a 16-bit backlight device.
+   - The firmware already applies the stock curve (t² + 0.01), so map the sim value linearly. Check the panel knob feels right across its range.
 6. **Firmware install through the Connector.** Put the box in RPI-RP2 (`mft bootloader` from Linux, or BOOTSEL). The Connector should offer `SIMINPUT rev2` among the boards for that drive and flash it.
 7. **Stop and power saving.** Stop the run: does the backlight go off? Leave the Connector idle for 15+ minutes: outputs go dark (MobiFlight power saving) and come back on activity.
 

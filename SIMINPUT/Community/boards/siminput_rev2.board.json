@@ -172,14 +172,14 @@
       "Pin": 18,
       "isAnalog": false,
       "isI2C": false,
-      "isPWM": true
+      "isPWM": false
     },
     {
       "Name": "D16",
       "Pin": 19,
       "isAnalog": false,
       "isI2C": false,
-      "isPWM": true
+      "isPWM": false
     },
     {
       "Name": "D17",

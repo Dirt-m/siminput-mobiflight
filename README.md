@@ -10,10 +10,10 @@ The stock SIMINPUT firmware stays the default. It is a plain USB joystick and wo
 
 | Connector pin | Hardware | Use as |
 |---|---|---|
-| D1 to D22 | GP4 to GP25 | Button, encoder (any two pins), output |
+| D1 to D22 | GP4 to GP25 | Button, encoder (any two pins), output (D15 and D16 on/off only: they share a PWM slice with the backlight) |
 | A1 to A4 | GP26 to GP29 | Button, analog input (0 to 3.3 V), output |
 | D23 to D38 | TCA9555 expander, virtual pins 30 to 45 | Button only |
-| Backlight | GP2 | Output (PWM 0 to 255) |
+| Backlight | GP2 | Output, 0 to 255 with the stock SIMINPUT brightness curve (16 bit PWM, 1 kHz) |
 
 Two presets ship with the board: "All buttons" (the stock layout) and "Buttons, A1 to A4 analog". Pick one under the module's "upload default config" button, then rename or change devices as you like.
 
@@ -47,12 +47,13 @@ Releases: publishing a GitHub release `vX.Y.Z` builds the zip with that version.
 SIMINPUT/
   SIMINPUT_platformio.ini        build env (board, features, memory sizes)
   siminput_expander.cpp          TCA9555 virtual pins
+  siminput_backlight.cpp         backlight brightness curve
   Community/
     boards/siminput_rev2.board.json   what the Connector reads: pins, limits, USB IDs, links
     config/*.mfmc                     device presets
     firmware/                         flash_nuke for "reset board"; the build adds the UF2
 tools/
-  mftool.py           talk to the board without the Connector (info, upload, monitor, set pin)
+  mftool.py           talk to the board without the Connector (info, upload, monitor, set output)
   to_mobiflight.py    stock firmware to MobiFlight, with config backup (Linux)
   to_siminput.py      back to the stock firmware, with config restore (Linux)
 docs/                 goal, hardware notes, MobiFlight notes, test plan
