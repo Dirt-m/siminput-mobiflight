@@ -15,11 +15,11 @@ The stock SIMINPUT firmware stays the default. It is a plain USB joystick and wo
 | D23 to D38 | TCA9555 expander, virtual pins 30 to 45 | Button only |
 | Backlight | GP2 | Output, 0 to 255 with the stock SIMINPUT brightness curve (16 bit PWM, 1 kHz) |
 
-Two presets ship with the board: "All buttons" (the stock layout) and "Buttons, A1 analog" (a pot on A1, A2 to A4 stay buttons). Pick one under the module's "upload default config" button, then change devices as you like. Only set up A jacks with a pot plugged in as analog: an empty analog input floats and follows whichever input was read before it.
+The board ships one preset, "All buttons" (the stock layout). Load it with the module's "upload default config" button. To use a pot, change that A jack from Button to Analog Input in the Connector's device list, one jack per pot.
 
 Limits:
 - Encoders work on any two of D1 to D22, adjacent or not (tested on D3 + D7). Pick encoder type "1 detent per cycle (00)" in the Connector for the SIMINPUT encoders. Not on the expander pins: they are read over I2C and aren't fast enough.
-- Analog inputs have no pull-up (the ADC read turns it off, as in the stock firmware), so a pot reads linear. An empty A jack set up as analog floats and sends the odd random value: only set up jacks with a pot plugged in as analog.
+- Analog inputs have no pull-up (as in the stock firmware), so a pot reads linear. Only set up A jacks with a pot plugged in as Analog Input: an empty analog input picks up noise and sends random values. Leave unused A jacks as buttons or remove them.
 - No steppers, servos, displays, shift registers or multiplexers: every pin already goes to an input jack.
 - The board needs MobiFlight Connector running. It isn't a joystick under this firmware.
 

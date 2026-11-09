@@ -10,7 +10,6 @@ protocol as MobiFlight Connector: fields split by ',', commands end with ';',
     uv run --with pyserial tools/mftool.py upload --raw "8.4.6.0.Enc test:3.2.Backlight:"
     uv run --with pyserial tools/mftool.py monitor
     uv run --with pyserial tools/mftool.py out 0 128        # output 0 (Backlight in the presets) to 50 %
-    uv run --with pyserial tools/mftool.py follow A1 0      # pot on A1 drives output 0, like a Connector mapping
     uv run --with pyserial tools/mftool.py bootloader       # 1200 baud touch: reboot to RPI-RP2
 
 The port defaults to the first /dev/ttyACM* with the Raspberry Pi VID; pass --port to override.
@@ -177,7 +176,7 @@ def cmd_upload(b, args):
     print(f"Uploaded {len(items)} devices.")
 
 
-def cmd_monitor(b, args, on_msg=None):
+def cmd_monitor(b, _):
     # GetConfig marks the board ready; it only sends input events after that.
     b.send(K_GET_CONFIG)
     b.expect(K_INFO)
@@ -189,22 +188,11 @@ def cmd_monitor(b, args, on_msg=None):
             msg = b.read(0.2)
             if msg:
                 show(msg)
-                if on_msg:
-                    on_msg(msg)
             if time.monotonic() - last_ping > 60:  # keep power saving mode off, like the Connector
                 b.send(18, 0)
                 last_ping = time.monotonic()
     except KeyboardInterrupt:
         pass
-
-
-def cmd_follow(b, args):
-    """Bench stand-in for a Connector mapping: an analog input drives an output."""
-    def on_msg(msg):
-        cmd, a = msg
-        if cmd == K_ANALOG and len(a) >= 2 and a[0] == args.analog:
-            b.send(K_SET_PIN, args.index, round(int(a[1]) * 255 / 1023))
-    cmd_monitor(b, args, on_msg)
 
 
 def cmd_pin(b, args):
@@ -232,9 +220,6 @@ def main():
     p = sub.add_parser("out", help="set an output: device index (order among outputs in the config, from 0) and value 0 to 255")
     p.add_argument("index", type=int)
     p.add_argument("value", type=int)
-    f = sub.add_parser("follow", help="monitor, and drive output INDEX from analog input NAME (0 to 1023 scaled to 0 to 255)")
-    f.add_argument("analog")
-    f.add_argument("index", type=int)
     sub.add_parser("bootloader")
     args = ap.parse_args()
     args.port = args.port or find_port()
@@ -243,7 +228,7 @@ def main():
         return cmd_bootloader(None, args)
     b = Board(args.port)
     {"info": cmd_info, "config": cmd_config, "upload": cmd_upload, "monitor": cmd_monitor,
-     "out": cmd_pin, "follow": cmd_follow}[args.cmd](b, args)
+     "out": cmd_pin}[args.cmd](b, args)
 
 
 if __name__ == "__main__":

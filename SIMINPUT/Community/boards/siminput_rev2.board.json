@@ -38,12 +38,6 @@
         "Description": "D1 to D38 and A1 to A4 as buttons, backlight as a PWM output. The stock SIMINPUT layout.",
         "File": "siminput_rev2.all-buttons.mfmc",
         "DefaultUpload": true
-      },
-      {
-        "Name": "Buttons, A1 analog",
-        "Description": "D1 to D38 as buttons, A1 to A4 as analog inputs, backlight as a PWM output.",
-        "File": "siminput_rev2.analog.mfmc",
-        "DefaultUpload": true
       }
     ]
   },
