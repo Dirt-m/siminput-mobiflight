@@ -19,7 +19,7 @@ The board ships one preset, "All buttons" (the stock layout). Load it with the m
 
 Limits:
 - Encoders work on any two of D1 to D22, adjacent or not (tested on D3 + D7). Pick encoder type "1 detent per cycle (00)" in the Connector for the SIMINPUT encoders. Not on the expander pins: they are read over I2C and aren't fast enough.
-- Analog inputs have no pull-up (as in the stock firmware), so a pot reads linear. Only set up A jacks with a pot plugged in as Analog Input: an empty analog input picks up noise and sends random values. Leave unused A jacks as buttons or remove them.
+- Analog inputs have no pull-up (as in the stock firmware), so a pot reads linear. Only set up A jacks with a pot plugged in as Analog Input: an empty analog input picks up noise and sends random values. Leave unused A jacks as buttons or remove them. Set the Analog Input's sensitivity to 3 in the Connector (default 5): smoother, and still quiet at rest. 2 is smoother still but can flicker between two values.
 - No steppers, servos, displays, shift registers or multiplexers: every pin already goes to an input jack.
 - The board needs MobiFlight Connector running. It isn't a joystick under this firmware.
 
