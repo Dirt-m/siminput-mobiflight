@@ -8,10 +8,15 @@ Rev2 boxes only. Not affiliated with the MobiFlight project.
 
 ## Installing
 
-1. Download `siminput_rev2_<version>.zip` from [Releases](../../releases).
-2. Unzip it into MobiFlight Connector's `Community` folder, `%LOCALAPPDATA%\MobiFlight\MobiFlight Connector\Community\`, so you get `Community\SIMINPUT\`. Restart the Connector.
-3. Put the firmware on the box. Switching wipes the box, including your SIMINPUT configuration, so back it up first. The SIMINPUT Configurator will do the backup and the switch for you, both ways. Until then: hold BOOTSEL while plugging in the box and flash it from the Connector, which offers `SIMINPUT rev2` for the RPI-RP2 drive.
-4. In the Connector, select the module and click "upload default config". That loads the "All buttons" layout.
+Use the [SIMINPUT Configurator](https://github.com/Dirt-m/siminput-firmware-updater/releases), 1.3.0 or newer. It backs up your configuration first and downloads the latest firmware itself.
+
+1. Close MobiFlight Connector.
+2. In the Configurator, connect the box, go to the Update page and click **Switch to MobiFlight firmware**. On Windows, leave "Also put the MobiFlight Connector files in its Community folder" ticked.
+3. Open MobiFlight Connector, select **SIMINPUT rev2** and click "upload default config". That loads the "All buttons" layout.
+
+A new box, or one plugged in with BOOTSEL held, shows up on the Update page in bootloader mode: click **Install MobiFlight firmware**.
+
+By hand: unzip `siminput_rev2_<version>.zip` from [Releases](../../releases) into `%LOCALAPPDATA%\MobiFlight\MobiFlight Connector\Community\` and flash the box from the Connector while it's in bootloader mode. That skips the config backup.
 
 ## What you get
 
@@ -31,7 +36,7 @@ Under this firmware the box is not a joystick any more. It only talks to MobiFli
 
 ## Going back to the stock firmware
 
-Use the SIMINPUT Configurator once it supports switching. By hand: flash `flash_nuke.uf2`, then CircuitPython 9.x, then copy the stock firmware files and your backed-up `config.json` onto the CIRCUITPY drive. `tools/to_siminput.py` does exactly that on Linux.
+Close MobiFlight Connector, open the Configurator, and click **Switch back to SIMINPUT firmware** on the Update page. It erases the box, installs CircuitPython and the stock firmware, and restores your backed-up configuration. Replug the box when it asks.
 
 ## Building
 

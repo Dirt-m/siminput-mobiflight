@@ -62,5 +62,5 @@ SIMINPUT has no pins free for steppers, servos, displays, shift registers or mul
 Python scripts for testing on Linux, run with `uv run --with pyserial python tools/<script>`:
 
 - `mftool.py`: talk to the box without the Connector: `info`, `config`, `upload`, `monitor`, `out <index> <value>`, `bootloader`.
-- `to_mobiflight.py`: back up the SIMINPUT config, then switch a box on the stock firmware to this one. Needs the Configurator's code: `uv run --project ../siminput-firmware-updater`.
+- `to_mobiflight.py` and `to_siminput.py` are the Linux originals of the Configurator's switch flow, handy for development. `to_mobiflight.py`: back up the SIMINPUT config, then switch a box on the stock firmware to this one. Needs the Configurator's code: `uv run --project ../siminput-firmware-updater`.
 - `to_siminput.py`: back to the stock firmware, restoring the backed-up config.
